@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elevia</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+</head>
+<body>
+<div class="app-container">
+
+  <!-- Home Page -->
+  <div id="home" class="page">
+    <img src="icons/icon-192.png" class="logo" alt="Elevia Logo">
+    <h1>Elevia</h1>
+    <h3>Empowering your journey</h3>
+    <p class="intro">
+      Elevia helps you measure your manifestation alignment. Choose your scores in intention, emotion, belief, and more, and see how aligned you are with the universe!
+    </p>
+
+    <div class="cards">
+      <div class="card" data-desc="Intention: How clear and focused your goal is.">Intention</div>
+      <div class="card" data-desc="Emotion: Your feelings and emotional energy.">Emotion</div>
+      <div class="card" data-desc="Phi: A unique mystical factor.">Phi</div>
+      <div class="card" data-desc="Focus: How concentrated you are on your goal.">Focus</div>
+      <div class="card" data-desc="Action: The steps you take toward your goal.">Action</div>
+      <div class="card" data-desc="Belief: How strongly you believe in your manifestation.">Belief</div>
+    </div>
+    <div id="card-desc">Hover over a card to see its meaning!</div>
+
+    <button id="startBtn">Start Manifestation Calculator</button>
+  </div>
+
+  <!-- Calculator Page -->
+  <div id="calculator" class="page hidden">
+    <h2>Manifestation Calculator</h2>
+
+    <div class="input-group">
+      <label>Intention</label>
+      <select id="intention">
+        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+      </select>
+      <small>How focused and clear your goal is.</small>
+    </div>
+
+    <div class="input-group">
+      <label>Emotion</label>
+      <select id="emotion">
+        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+      </select>
+      <small>How much positive energy you feel toward your goal.</small>
+    </div>
+
+    <div class="input-group">
+      <label>Phi</label>
+      <select id="phi">
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+      </select>
+      <small>A mystical alignment factor.</small>
+    </div>
+
+    <div class="input-group">
+      <label>Focus</label>
+      <select id="focus">
+        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+      </select>
+      <small>How concentrated you are on your goal.</small>
+    </div>
+
+    <div class="input-group">
+      <label>Action</label>
+      <select id="action">
+        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+      </select>
+      <small>How consistent your actions are.</small>
+    </div>
+
+    <div class="input-group">
+      <label>Belief</label>
+      <select id="belief">
+        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+      </select>
+      <small>How strongly you believe in your manifestation.</small>
+    </div>
+
+    <div class="probability-bar-container">
+      <div class="probability-bar" id="probability-bar"></div>
+    </div>
+    <div id="probability-text">Your manifestation alignment will appear here as you select options!</div>
+
+    <button id="calculateBtn">Calculate Manifestation</button>
+    <button id="backBtn">Back to Home</button>
+
+    <div id="result"></div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
