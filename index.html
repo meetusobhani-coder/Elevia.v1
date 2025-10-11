@@ -1,106 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elevia</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Elevia | Manifestation Readiness</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<div class="app-container">
-
-  <!-- Home Page -->
-  <div id="home" class="page">
-    <!-- Themed CSS Logo -->
-    <div class="logo-container">
-      <div class="logo-circle">E</div>
+  <header>
+    <div class="header-inner">
+      <img src="images/elevia_logo.png" alt="Elevia Logo" class="logo" onerror="this.style.display='none'">
     </div>
+  </header>
 
-    <h1>Elevia</h1>
-    <h3>Empowering your journey</h3>
-    <p class="intro">
-      Elevia helps you measure your manifestation alignment. Choose your scores in intention, emotion, belief, and more, and see how aligned you are with the universe!
-    </p>
+  <main>
+    <section class="intro">
+      <h2>Manifestation is turning your thoughts and feelings into reality</h2>
+      <p>Focus, act, feel, and trust timing — your energy shapes your world. Use the calculator to check how ready you are.</p>
+    </section>
 
-    <div class="cards">
-      <div class="card" data-desc="Intention: How clear and focused your goal is.">Intention</div>
-      <div class="card" data-desc="Emotion: Your feelings and emotional energy.">Emotion</div>
-      <div class="card" data-desc="Phi: A unique mystical factor.">Phi</div>
-      <div class="card" data-desc="Focus: How concentrated you are on your goal.">Focus</div>
-      <div class="card" data-desc="Action: The steps you take toward your goal.">Action</div>
-      <div class="card" data-desc="Belief: How strongly you believe in your manifestation.">Belief</div>
+    <section class="cards">
+      <div class="card" style="background: linear-gradient(135deg,#f6d365,#fda085);">
+        <h3>✨ Intention</h3>
+        <p class="card-ask">What is your heart asking for?</p>
+        <small class="card-explain">Clear intention gives your energy a direction.</small>
+      </div>
+
+      <div class="card" style="background: linear-gradient(135deg,#a1c4fd,#c2e9fb);">
+        <h3>⏳ Timing Readiness</h3>
+        <p class="card-ask">Is now the right time for this wish?</p>
+        <small class="card-explain">The right timing helps things fall into place easily.</small>
+      </div>
+
+      <div class="card" style="background: linear-gradient(135deg,#fbc2eb,#a6c1ee);">
+        <h3>🏃 Action Alignment</h3>
+        <p class="card-ask">Are your actions moving you toward the goal?</p>
+        <small class="card-explain">Aligned action turns wishes into results.</small>
+      </div>
+
+      <div class="card" style="background: linear-gradient(135deg,#fdcbf1,#e6dee9);">
+        <h3>🎯 Milestone Clarity</h3>
+        <p class="card-ask">Is your goal clear and simple to picture?</p>
+        <small class="card-explain">Clarity focuses your energy like a beam.</small>
+      </div>
+
+      <div class="card" style="background: linear-gradient(135deg,#fdfbfb,#ebedee);">
+        <h3>🌈 Patience Level</h3>
+        <p class="card-ask">Can you stay calm while things unfold?</p>
+        <small class="card-explain">Patience sustains your vibration between effort and result.</small>
+      </div>
+
+      <div class="card" style="background: linear-gradient(135deg,#d4fc79,#96e6a1);">
+        <h3>❤️ Emotional Energy (Φ)</h3>
+        <p class="card-ask">How excited or calm are you about this wish?</p>
+        <small class="card-explain">Emotion powers attraction — 0° calm, 360° fully fired up.</small>
+      </div>
+    </section>
+
+    <div class="cta">
+      <a class="btn" href="calculator.html">Go to Calculator</a>
     </div>
-    <div id="card-desc">Hover over a card to see its meaning!</div>
+  </main>
 
-    <button id="startBtn">Start Manifestation Calculator</button>
-  </div>
-
-  <!-- Calculator Page -->
-  <div id="calculator" class="page hidden">
-    <h2>Manifestation Calculator</h2>
-
-    <div class="input-group">
-      <label>Intention</label>
-      <select id="intention">
-        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-      </select>
-      <small>How focused and clear your goal is.</small>
-    </div>
-
-    <div class="input-group">
-      <label>Emotion</label>
-      <select id="emotion">
-        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-      </select>
-      <small>How much positive energy you feel toward your goal.</small>
-    </div>
-
-    <div class="input-group">
-      <label>Phi</label>
-      <select id="phi">
-        <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-      </select>
-      <small>A mystical alignment factor.</small>
-    </div>
-
-    <div class="input-group">
-      <label>Focus</label>
-      <select id="focus">
-        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-      </select>
-      <small>How concentrated you are on your goal.</small>
-    </div>
-
-    <div class="input-group">
-      <label>Action</label>
-      <select id="action">
-        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-      </select>
-      <small>How consistent your actions are.</small>
-    </div>
-
-    <div class="input-group">
-      <label>Belief</label>
-      <select id="belief">
-        <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-      </select>
-      <small>How strongly you believe in your manifestation.</small>
-    </div>
-
-    <div class="probability-bar-container">
-      <div class="probability-bar" id="probability-bar"></div>
-    </div>
-    <div id="probability-text">Your manifestation alignment will appear here as you select options!</div>
-
-    <button id="calculateBtn">Calculate Manifestation</button>
-    <button id="backBtn">Back to Home</button>
-
-    <div id="result"></div>
-  </div>
-
-</div>
-
-<script src="app.js"></script>
+  <footer>
+    <p>© 2025 Elevia | Align. Believe. Receive.</p>
+    <p class="quote">✨ What you focus on grows.</p>
+  </footer>
 </body>
 </html>

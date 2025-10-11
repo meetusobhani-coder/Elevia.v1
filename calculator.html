@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elevia Manifestation Calculator</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <img src="images/elevia_logo.png" alt="Elevia Logo" class="logo">
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Check your manifestation readiness!</h2>
+      <p>Adjust your intention, timing, action, clarity, patience, and energy levels to see your manifestation probability instantly.</p>
+    </section>
+
+    <div class="calculator">
+      <form id="manifestationForm" class="calc-form">
+        <!-- Intention -->
+        <div class="card" style="background: linear-gradient(135deg,#f6d365,#fda085);">
+          <label for="intention">✨ Intention</label>
+          <select id="intention">
+            <option value="">Select</option>
+            <option value="Love">Love</option>
+            <option value="Career">Career</option>
+            <option value="Health">Health</option>
+            <option value="Wealth">Wealth</option>
+          </select>
+          <p class="hint">What is your heart wishing for?</p>
+        </div>
+
+        <!-- Timing Readiness -->
+        <div class="card" style="background: linear-gradient(135deg,#a1c4fd,#c2e9fb);">
+          <label for="timing">⏳ Timing Readiness (1–10)</label>
+          <select id="timing">
+            <option value="">Select</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <p class="hint">Is now the right time? (1=not ready, 10=perfectly timed)</p>
+        </div>
+
+        <!-- Action Alignment -->
+        <div class="card" style="background: linear-gradient(135deg,#fbc2eb,#a6c1ee);">
+          <label for="action">🏃 Action Alignment (1–10)</label>
+          <select id="action">
+            <option value="">Select</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <p class="hint">Are you doing the right things? (1=not really, 10=fully aligned)</p>
+        </div>
+
+        <!-- Milestone Clarity -->
+        <div class="card" style="background: linear-gradient(135deg,#fdcbf1,#e6dee9);">
+          <label for="clarity">🎯 Milestone Clarity (1–10)</label>
+          <select id="clarity">
+            <option value="">Select</option>
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <p class="hint">How clear is your goal? (1=blurry, 10=super clear)</p>
+        </div>
+
+        <!-- Patience Level -->
+        <div class="card" style="background: linear-gradient(135deg,#fdfbfb,#ebedee);">
+          <label for="patience">🌈 Patience Level</label>
+          <select id="patience">
+            <option value="">Select</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+          <p class="hint">How calm can you stay if things don’t go perfectly?</p>
+        </div>
+
+        <!-- Emotional Energy -->
+        <div class="card" style="background: linear-gradient(135deg,#d4fc79,#96e6a1);">
+          <label for="energy">❤️ Emotional Energy (°)</label>
+          <select id="energy">
+            <option value="">Select</option>
+            <option value="0">0° (calm)</option>
+            <option value="180">180° (moderate)</option>
+            <option value="360">360° (super fired up)</option>
+          </select>
+          <p class="hint">How emotionally charged are you for this wish?</p>
+        </div>
+
+        <div class="button-group">
+          <button type="button" class="primary" onclick="calculateManifestation()">Calculate</button>
+          <button type="button" class="secondary" onclick="resetForm()">Reset</button>
+        </div>
+      </form>
+
+      <div id="result" class="result"></div>
+      <div class="home-link-wrap"><a href="index.html" class="home-link">Back to Home</a></div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

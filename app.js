@@ -1,84 +1,51 @@
-const home = document.getElementById('home');
-const calculator = document.getElementById('calculator');
-const startBtn = document.getElementById('startBtn');
-const backBtn = document.getElementById('backBtn');
-const calculateBtn = document.getElementById('calculateBtn');
-const resultDiv = document.getElementById('result');
+function calculateManifestation() {
+    const intention = document.getElementById("intention").value;
+    const timing = parseInt(document.getElementById("timing").value);
+    const action = parseInt(document.getElementById("action").value);
+    const clarity = parseInt(document.getElementById("clarity").value);
+    const patience = document.getElementById("patience").value;
+    const energy = parseInt(document.getElementById("energy").value);
 
-const intention = document.getElementById('intention');
-const emotion = document.getElementById('emotion');
-const phi = document.getElementById('phi');
-const focus = document.getElementById('focus');
-const action = document.getElementById('action');
-const belief = document.getElementById('belief');
+    // Validation: ensure all values are selected
+    if (!intention || !timing || !action || !clarity || !patience || isNaN(energy)) {
+        alert("Please select all values before calculating!");
+        return;
+    }
 
-const cards = document.querySelectorAll('.card');
-const cardDesc = document.getElementById('card-desc');
+    // Map patience to numeric value for calculation
+    let patienceVal = 5; // default
+    if (patience === "Low") patienceVal = 3;
+    else if (patience === "Medium") patienceVal = 5;
+    else if (patience === "High") patienceVal = 8;
 
-const probabilityBar = document.getElementById('probability-bar');
-const probabilityText = document.getElementById('probability-text');
+    // Normalize energy to 10-point scale
+    const normalizedEnergy = energy / 36 * 10;
 
-// Page navigation
-startBtn.addEventListener('click', () => {
-    home.classList.add('hidden');
-    calculator.classList.remove('hidden');
-});
-backBtn.addEventListener('click', () => {
-    calculator.classList.add('hidden');
-    home.classList.remove('hidden');
-    resultDiv.innerHTML = '';
-    probabilityBar.style.width = '0%';
-    probabilityText.textContent = 'Your manifestation alignment will appear here as you select options!';
-});
+    // Calculate probability as average of numeric factors
+    const factors = [timing, action, clarity, patienceVal, normalizedEnergy];
+    const probability = Math.round(factors.reduce((a,b) => a + b, 0)/factors.length);
 
-// Cards hover
-cards.forEach(card => {
-    card.addEventListener('mouseover', () => cardDesc.textContent = card.dataset.desc);
-    card.addEventListener('mouseout', () => cardDesc.textContent = "Hover over a card to see its meaning!");
-    card.addEventListener('click', () => alert(card.dataset.desc));
-});
+    // Find lowest factor to personalize interpretation
+    const lowestVal = Math.min(timing, action, clarity, patienceVal, normalizedEnergy);
+    let lowestAspect = "";
+    if (lowestVal === timing) lowestAspect = "Timing";
+    else if (lowestVal === action) lowestAspect = "Action";
+    else if (lowestVal === clarity) lowestAspect = "Clarity";
+    else if (lowestVal === patienceVal) lowestAspect = "Patience";
+    else lowestAspect = "Emotional Energy";
 
-// Probability bar
-function updateProbabilityBar() {
-    const scores = [parseInt(intention.value),parseInt(emotion.value),parseInt(phi.value),
-        parseInt(focus.value),parseInt(action.value),parseInt(belief.value)];
-    const weights = [2,3,2,3,4,5];
-    let score = scores.reduce((acc,val,idx)=>acc+val*weights[idx],0);
-    let maxScore = 66;
-    let percentage = Math.round((score/maxScore)*100);
+    // Personalized interpretation
+    let interpretation = `Your manifestation readiness is around ${probability}/10.<br>`;
+    interpretation += `Your strongest factors are supporting your goal, but <strong>${lowestAspect}</strong> could be improved for better results.<br>`;
 
-    probabilityBar.style.width = `${percentage}%`;
-    if(percentage>=80) probabilityBar.style.background='linear-gradient(90deg,#2ecc71,#27ae60)';
-    else if(percentage>=50) probabilityBar.style.background='linear-gradient(90deg,#f1c40f,#f39c12)';
-    else probabilityBar.style.background='linear-gradient(90deg,#e74c3c,#c0392b)';
+    if (probability >= 8) interpretation += "🌟 Great! You are highly aligned to manifest this desire.";
+    else if (probability >= 5) interpretation += "✨ Moderate alignment — a little focus and adjustment can help.";
+    else interpretation += "⚠️ Low alignment — reflect and strengthen the lowest factor to increase your manifestation power.";
 
-    probabilityText.textContent = `Manifestation Alignment: ${percentage}%`;
+    document.getElementById("result").innerHTML = `<h3>Result</h3><p>${interpretation}</p>`;
 }
 
-[intention,emotion,phi,focus,action,belief].forEach(el => el.addEventListener('change', updateProbabilityBar));
-
-// Calculate
-calculateBtn.addEventListener('click', () => {
-    const scores = [parseInt(intention.value),parseInt(emotion.value),parseInt(phi.value),
-        parseInt(focus.value),parseInt(action.value),parseInt(belief.value)];
-    const weights = [2,3,2,3,4,5];
-    let score = scores.reduce((acc,val,idx)=>acc+val*weights[idx],0);
-
-    let interpretation='', color='';
-    if(score>=60){ interpretation='High probability! The universe is aligned with your intention.'; color='#2ecc71'; }
-    else if(score>=40){ interpretation='Moderate probability. Stay positive and consistent.'; color='#f1c40f'; }
-    else{ interpretation='Low probability. Focus on mindset, belief, and taking action.'; color='#e74c3c'; }
-
-    resultDiv.style.backgroundColor = color;
-    resultDiv.style.color = '#fff';
-    resultDiv.style.padding = '12px';
-    resultDiv.style.borderRadius = '12px';
-    resultDiv.innerHTML = `Your Manifestation Score: ${score} <br> ${interpretation}`;
-});
-
-// Service worker
-if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('service-worker.js')
-    .then(()=>console.log('Service Worker Registered'))
-    .catch(err=>console.log('Service Worker Failed',err));
+function resetForm() {
+    document.getElementById("manifestationForm").reset();
+    document.getElementById("result").innerHTML = "";
 }
