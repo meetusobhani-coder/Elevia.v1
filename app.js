@@ -1,51 +1,50 @@
-function calculateManifestation() {
-    const intention = document.getElementById("intention").value;
-    const timing = parseInt(document.getElementById("timing").value);
-    const action = parseInt(document.getElementById("action").value);
-    const clarity = parseInt(document.getElementById("clarity").value);
-    const patience = document.getElementById("patience").value;
-    const energy = parseInt(document.getElementById("energy").value);
+const calculateBtn = document.getElementById('calculateBtn');
+const resetBtn = document.getElementById('resetBtn');
+const resultDiv = document.getElementById('result');
+const popup = document.getElementById('popup');
+const popupClose = document.getElementById('popupClose');
 
-    // Validation: ensure all values are selected
-    if (!intention || !timing || !action || !clarity || !patience || isNaN(energy)) {
-        alert("Please select all values before calculating!");
-        return;
-    }
-
-    // Map patience to numeric value for calculation
-    let patienceVal = 5; // default
-    if (patience === "Low") patienceVal = 3;
-    else if (patience === "Medium") patienceVal = 5;
-    else if (patience === "High") patienceVal = 8;
-
-    // Normalize energy to 10-point scale
-    const normalizedEnergy = energy / 36 * 10;
-
-    // Calculate probability as average of numeric factors
-    const factors = [timing, action, clarity, patienceVal, normalizedEnergy];
-    const probability = Math.round(factors.reduce((a,b) => a + b, 0)/factors.length);
-
-    // Find lowest factor to personalize interpretation
-    const lowestVal = Math.min(timing, action, clarity, patienceVal, normalizedEnergy);
-    let lowestAspect = "";
-    if (lowestVal === timing) lowestAspect = "Timing";
-    else if (lowestVal === action) lowestAspect = "Action";
-    else if (lowestVal === clarity) lowestAspect = "Clarity";
-    else if (lowestVal === patienceVal) lowestAspect = "Patience";
-    else lowestAspect = "Emotional Energy";
-
-    // Personalized interpretation
-    let interpretation = `Your manifestation readiness is around ${probability}/10.<br>`;
-    interpretation += `Your strongest factors are supporting your goal, but <strong>${lowestAspect}</strong> could be improved for better results.<br>`;
-
-    if (probability >= 8) interpretation += "🌟 Great! You are highly aligned to manifest this desire.";
-    else if (probability >= 5) interpretation += "✨ Moderate alignment — a little focus and adjustment can help.";
-    else interpretation += "⚠️ Low alignment — reflect and strengthen the lowest factor to increase your manifestation power.";
-
-    document.getElementById("result").innerHTML = `<h3>Result</h3><p>${interpretation}</p>`;
+function getDropdownValue(id){
+  const val = document.getElementById(id).value;
+  return val === "" ? null : val;
 }
 
-function resetForm() {
-    document.getElementById("manifestationForm").reset();
-    document.getElementById("result").innerHTML = "";
+function showPopup(){
+  popup.style.display="block";
+}
+popupClose.onclick = ()=>popup.style.display="none";
+
+calculateBtn.onclick = ()=>{
+  const intention = getDropdownValue('intention');
+  const timing = parseInt(getDropdownValue('timing'));
+  const action = parseInt(getDropdownValue('action'));
+  const clarity = parseInt(getDropdownValue('clarity'));
+  const patience = getDropdownValue('patience');
+  const phi = parseInt(getDropdownValue('phi'));
+
+  if(!intention || !timing || !action || !clarity || !patience || isNaN(phi)){
+    alert("Please select all fields before calculating!");
+    return;
+  }
+
+  const scores = [timing, action, clarity];
+  const minScore = Math.min(...scores);
+  const sumScore = timing + action + clarity;
+  const totalScore = Math.round((sumScore + phi/36 + (patience==="Low"?1:patience==="Medium"?5:10))/5);
+
+  let interpretation = `Your Manifestation Score: ${totalScore}/10\n`;
+
+  interpretation += `Positive: ${totalScore>6 ? "Good progress!" : "Needs improvement."}\n`;
+  interpretation += `Focus on: ${minScore===timing?"Timing Readiness":minScore===action?"Action Alignment":"Milestone Clarity"}`;
+
+  resultDiv.style.display="block";
+  resultDiv.textContent=interpretation;
+
+  popup.style.display="block";
+}
+
+resetBtn.onclick=()=>{
+  document.getElementById('manifestationForm').reset();
+  resultDiv.style.display="none";
+  popup.style.display="none";
 }
