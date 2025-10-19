@@ -7,108 +7,156 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
-    <h1 class="site-title">Elevia</h1>
-  </header>
 
-  <main class="main-center">
-    <section class="calculator-wrap">
-      <h2 class="calc-intro">Discover your readiness to manifest your desires. Adjust your intention, focus, and energy levels, then see your manifestation probability instantly!</h2>
+<!-- Sign In Popup (appears first) -->
+<div id="signin-popup" class="popup-overlay">
+  <div class="popup-box">
+    <h2>Welcome to Elevia ✨</h2>
+    <p>Sign in or sign up to continue your manifestation journey</p>
+    <input type="email" id="email" placeholder="Enter your email" class="popup-input" />
+    <input type="password" id="password" placeholder="Enter your password" class="popup-input" />
+    <button onclick="signin()" class="popup-btn">Sign In</button>
+    <p class="signup-link" onclick="showSignup()">New here? Create an account</p>
+  </div>
+</div>
 
-      <form id="manifestationForm" class="calc-form" onsubmit="return false;">
-        <label>✨ Intention
-          <select id="intention">
-            <option value="">— Select intention —</option>
-            <option value="Love">Love</option>
-            <option value="Career">Career</option>
-            <option value="Health">Health</option>
-            <option value="Wealth">Wealth</option>
-            <option value="Self">Self-Growth</option>
-          </select>
-          <small>Choose your main focus for manifestation.</small>
-        </label>
+<!-- Signup Popup -->
+<div id="signup-popup" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h2>Create Your Account 🌱</h2>
+    <input type="text" id="signup-name" placeholder="Full Name" class="popup-input" />
+    <input type="email" id="signup-email" placeholder="Email" class="popup-input" />
+    <input type="password" id="signup-password" placeholder="Password" class="popup-input" />
+    <button onclick="signup()" class="popup-btn">Sign Up</button>
+    <p class="signup-link" onclick="showSignin()">Already have an account? Sign in</p>
+  </div>
+</div>
 
-        <label>⏳ Timing Readiness (1–10)
-          <select id="timing">
-            <option value="">— Select 1–10 —</option>
-            <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
-            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
-            <option value="10">10 (High)</option>
-          </select>
-          <small>Is now the right time for this wish?</small>
-        </label>
+<header class="site-header">
+  <h1 class="site-title">Elevia</h1>
+</header>
 
-        <label>🏃 Action Alignment (1–10)
-          <select id="action">
-            <option value="">— Select 1–10 —</option>
-            <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
-            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
-            <option value="10">10 (High)</option>
-          </select>
-          <small>Are your actions aligned with your wish?</small>
-        </label>
+<main class="main-center">
+  <section class="calculator-wrap">
+    <h2 class="calc-intro">Discover your readiness to manifest your desires. Adjust your intention, focus, and energy levels, then see your manifestation probability instantly!</h2>
 
-        <label>🎯 Milestone Clarity (1–10)
-          <select id="clarity">
-            <option value="">— Select 1–10 —</option>
-            <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
-            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
-            <option value="10">10 (High)</option>
-          </select>
-          <small>How clear is your goal?</small>
-        </label>
+    <form id="manifestationForm" class="calc-form" onsubmit="return false;">
+      <label>✨ Intention
+        <select id="intention">
+          <option value="">— Select intention —</option>
+          <option value="Love">Love</option>
+          <option value="Career">Career</option>
+           <option value="Family">Family</option>
+          <option value="Health">Health</option>
+          <option value="Wealth">Wealth</option>
+          <option value="Self">Self-Growth</option>
+        </select>
+        <small>Choose your main focus for manifestation.</small>
+      </label>
 
-        <label>🌈 Patience Level
-          <select id="patience">
-            <option value="">— Select —</option>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-          </select>
-          <small>How calm can you stay if things don’t go perfectly?</small>
-        </label>
+      <label>⏳ Timing Readiness (1–10)
+        <select id="timing">
+          <option value="">— Select 1–10 —</option>
+          <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10 (High)</option>
+        </select>
+        <small>Is now the right time for this wish?</small>
+      </label>
 
-        <label>❤️ Emotional Energy (°)
-          <select id="phi">
-            <option value="">— Select —</option>
-            <option value="0">0° (Low)</option>
-            <option value="180">180° (Moderate)</option>
-            <option value="360">360° (High)</option>
-          </select>
-          <small>How emotionally charged are you for this wish?</small>
-        </label>
+      <label>🏃 Action Alignment (1–10)
+        <select id="action">
+          <option value="">— Select 1–10 —</option>
+          <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10 (High)</option>
+        </select>
+        <small>Are your actions aligned with your wish?</small>
+      </label>
 
-        <div class="buttons-row">
-          <button type="button" id="calculateBtn">Calculate</button>
-          <button type="button" id="resetBtn">Reset</button>
-        </div>
-      </form>
+      <label>🎯 Milestone Clarity (1–10)
+        <select id="clarity">
+          <option value="">— Select 1–10 —</option>
+          <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10 (High)</option>
+        </select>
+        <small>How clear is your goal?</small>
+      </label>
 
-      <div id="result" class="result-panel" style="display:none"></div>
+      <label>🌈 Patience Level
+        <select id="patience">
+          <option value="">— Select —</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+        <small>How calm can you stay if things don’t go perfectly?</small>
+      </label>
 
-      <div class="popup-container">
-        <div id="popup" class="modal-card" style="display:none">
-          <h3 class="modal-heading">For further guidance, please try our consulting services</h3>
-          <div class="modal-actions">
-            <a href="details.html" class="modal-link">Go to Consulting</a>
-            <button id="popupClose" class="modal-close">Close</button>
-          </div>
+      <label>❤️ Emotional Energy (°)
+        <select id="phi">
+          <option value="">— Select —</option>
+          <option value="0">0° (Low)</option>
+          <option value="180">180° (Moderate)</option>
+          <option value="360">360° (High)</option>
+        </select>
+        <small>How emotionally charged are you for this wish?</small>
+      </label>
+
+      <div class="buttons-row">
+        <button type="button" id="calculateBtn">Calculate</button>
+        <button type="button" id="resetBtn">Reset</button>
+      </div>
+    </form>
+
+    <div id="result" class="result-panel" style="display:none"></div>
+
+    <div class="popup-container">
+      <div id="popup" class="modal-card" style="display:none">
+        <h3 class="modal-heading">For further guidance, please try our consulting services</h3>
+        <div class="modal-actions">
+          <a href="details.html" class="modal-link">Go to Consulting</a>
+          <button id="popupClose" class="modal-close">Close</button>
         </div>
       </div>
+    </div>
 
-      <div class="cta" style="text-align:center;">
-        <a class="btn" href="index.html">Back to Home</a>
-      </div>
-    </section>
-  </main>
+    <div class="cta" style="text-align:center;">
+      <a class="btn" href="index.html">Back to Home</a>
+    </div>
+  </section>
+</main>
 
-  <footer class="site-footer">
-    <p>© 2025 Elevia</p>
-  </footer>
+<footer class="site-footer">
+  <p>© 2025 Elevia</p>
+</footer>
 
-  <script src="app.js"></script>
+<script src="app.js"></script>
+<script>
+// Sign In / Sign Up logic
+function showSignup() {
+  document.getElementById('signin-popup').style.display = 'none';
+  document.getElementById('signup-popup').style.display = 'flex';
+}
+function showSignin() {
+  document.getElementById('signup-popup').style.display = 'none';
+  document.getElementById('signin-popup').style.display = 'flex';
+}
+function signin() {
+  // For now, just close popup
+  document.getElementById('signin-popup').style.display = 'none';
+}
+function signup() {
+  document.getElementById('signup-popup').style.display = 'none';
+}
+// Show SignIn popup on page load
+window.onload = function() {
+  document.getElementById('signin-popup').style.display = 'flex';
+};
+</script>
 </body>
 </html>
