@@ -7,17 +7,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header -->
   <header class="site-header">
     <h1 class="site-title">Elevia</h1>
-    <button class="auth-btn" id="openAuthBtn">Sign In / Sign Up</button>
   </header>
 
   <main class="main-center">
+    <!-- Intro Section -->
     <section class="intro-section">
       <h2>How Elevia Helps</h2>
       <p>Manifestation is the process of turning your thoughts and feelings into reality. By focusing on your intention, aligning your actions, maintaining patience, and keeping your energy high, you can bring your dreams to life. Use our calculator to see how ready you are to manifest your desires and understand which areas to focus on!</p>
     </section>
 
+    <!-- Cards Grid / Manifestation Factors -->
     <section class="cards-grid" aria-label="Manifestation Factors">
       <div class="card mild-1">
         <h3>✨ Intention</h3>
@@ -45,36 +47,15 @@
       </div>
     </section>
 
-    <div class="cta" style="text-align:center; margin-top:20px;">
+    <!-- Go to Calculator Box -->
+    <div class="calculator-box">
       <a class="btn" href="calculator.html">Go to Calculator</a>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="site-footer">
     <p>© 2025 Elevia</p>
   </footer>
-
-  <!-- Authentication Modal -->
-  <div class="auth-modal" id="authModal">
-    <div class="auth-modal-content">
-      <span class="close-auth" id="closeAuth">&times;</span>
-      <h2 id="authTitle">Sign In</h2>
-
-      <form id="authForm">
-        <label>Email</label>
-        <input type="email" placeholder="Enter your email" required>
-        <label>Password</label>
-        <input type="password" placeholder="Enter your password" required>
-        <button type="submit" class="btn full-btn">Sign In</button>
-      </form>
-
-      <p class="switch-auth">
-        Don’t have an account?
-        <a href="#" id="toggleAuth">Sign Up</a>
-      </p>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
 </body>
 </html>

@@ -1,18 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Elevia — Calculator</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Elevia — Calculator</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { font-family: 'Poppins', sans-serif; background:#f3f5f9; margin:0; padding:0; }
+.site-header { display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.site-title { font-size:24px; }
+.signout-btn, .admin-btn { border:none; padding:5px 10px; border-radius:5px; cursor:pointer; margin-left:10px; font-size:14px; }
+.signout-btn { background:#22c55e; color:#fff; }
+.admin-btn { background:#ff6b6b; color:#fff; }
+.main-center { max-width:800px; margin:20px auto; padding:0 20px; }
+.calculator-wrap { background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+.calc-form label { display:block; margin-bottom:15px; font-weight:500; }
+.calc-form select { width:100%; padding:8px; margin-top:5px; border-radius:5px; border:1px solid #ccc; }
+.buttons-row { display:flex; gap:10px; margin-top:15px; flex-wrap:wrap; }
+.buttons-row button, .buttons-row a { padding:10px 15px; border:none; border-radius:5px; cursor:pointer; background:#4f46e5; color:#fff; text-decoration:none; display:inline-block; text-align:center; }
+.buttons-row .reset { background:#6b7280; }
+.buttons-row .link { background:#fff; color:#4f46e5; border:1px solid #e6e9f2; }
+#result { margin-top:20px; padding:15px; background:#f0f4ff; border-radius:5px; display:none; }
+#consultingPopup { margin-top:15px; padding:15px; background:#fff0f5; border-radius:8px; display:none; }
+.download-btn { margin-top:10px; padding:8px 12px; background:#4f46e5; color:#fff; border:none; border-radius:5px; cursor:pointer; text-decoration:none; display:inline-block; }
+#adminPopup { display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.3); max-width:90%; max-height:80%; overflow:auto; z-index:1000; }
+#adminPopup table { width:100%; border-collapse:collapse; margin-top:10px; }
+#adminPopup th, #adminPopup td { border:1px solid #ccc; padding:8px; text-align:center; }
+#adminPopup button { margin-top:10px; background:#ff6b6b; color:#fff; padding:5px 10px; border:none; border-radius:5px; cursor:pointer; }
+.popup-input { width:90%; padding:8px; margin:8px 0; border-radius:5px; border:1px solid #ccc; }
+.popup-btn { padding:10px 15px; margin-top:10px; border:none; border-radius:5px; cursor:pointer; background:#4f46e5; color:#fff; width:95%; }
+.popup-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index:999; }
+.popup-box { background:#fff; padding:20px; border-radius:10px; max-width:400px; width:90%; text-align:center; }
+.signup-link { color:#4f46e5; cursor:pointer; margin-top:10px; display:block; }
+.small-muted { font-size:0.9rem; color:#6b7280; }
+</style>
 </head>
 <body>
 
-<!-- Sign In Popup (appears first) -->
-<div id="signin-popup" class="popup-overlay">
+<!-- Sign In Popup -->
+<div id="signin-popup" class="popup-overlay" style="display:none;">
   <div class="popup-box">
     <h2>Welcome to Elevia ✨</h2>
-    <p>Sign in or sign up to continue your manifestation journey</p>
+    <p class="small-muted">Sign in or sign up to continue your manifestation journey</p>
     <input type="email" id="email" placeholder="Enter your email" class="popup-input" />
     <input type="password" id="password" placeholder="Enter your password" class="popup-input" />
     <button onclick="signin()" class="popup-btn">Sign In</button>
@@ -34,24 +63,28 @@
 
 <header class="site-header">
   <h1 class="site-title">Elevia</h1>
+  <div>
+    <button id="signoutBtn" class="signout-btn" style="display:none;">Sign Out</button>
+    <button id="adminBtn" class="admin-btn" style="display:none;">Admin View</button>
+  </div>
 </header>
 
 <main class="main-center">
-  <section class="calculator-wrap">
-    <h2 class="calc-intro">Discover your readiness to manifest your desires. Adjust your intention, focus, and energy levels, then see your manifestation probability instantly!</h2>
+<section class="calculator-wrap">
+  <h2 class="calc-intro">Discover your readiness to manifest your desires!</h2>
 
-    <form id="manifestationForm" class="calc-form" onsubmit="return false;">
-      <label>✨ Intention
+  <form id="manifestationForm" class="calc-form" onsubmit="return false;">
+    <label>✨ Intention
         <select id="intention">
           <option value="">— Select intention —</option>
           <option value="Love">Love</option>
           <option value="Career">Career</option>
-           <option value="Family">Family</option>
+          <option value="Family">Family</option>
           <option value="Health">Health</option>
           <option value="Wealth">Wealth</option>
           <option value="Self">Self-Growth</option>
         </select>
-        <small>Choose your main focus for manifestation.</small>
+        <small class="small-muted">Choose your main focus for manifestation.</small>
       </label>
 
       <label>⏳ Timing Readiness (1–10)
@@ -62,7 +95,7 @@
           <option value="7">7</option><option value="8">8</option><option value="9">9</option>
           <option value="10">10 (High)</option>
         </select>
-        <small>Is now the right time for this wish?</small>
+        <small class="small-muted">Is now the right time for this wish?</small>
       </label>
 
       <label>🏃 Action Alignment (1–10)
@@ -73,7 +106,7 @@
           <option value="7">7</option><option value="8">8</option><option value="9">9</option>
           <option value="10">10 (High)</option>
         </select>
-        <small>Are your actions aligned with your wish?</small>
+        <small class="small-muted">Are your actions aligned with your wish?</small>
       </label>
 
       <label>🎯 Milestone Clarity (1–10)
@@ -84,7 +117,7 @@
           <option value="7">7</option><option value="8">8</option><option value="9">9</option>
           <option value="10">10 (High)</option>
         </select>
-        <small>How clear is your goal?</small>
+        <small class="small-muted">How clear is your goal?</small>
       </label>
 
       <label>🌈 Patience Level
@@ -94,7 +127,7 @@
           <option value="Medium">Medium</option>
           <option value="High">High</option>
         </select>
-        <small>How calm can you stay if things don’t go perfectly?</small>
+        <small class="small-muted">How calm can you stay if things don’t go perfectly?</small>
       </label>
 
       <label>❤️ Emotional Energy (°)
@@ -104,59 +137,234 @@
           <option value="180">180° (Moderate)</option>
           <option value="360">360° (High)</option>
         </select>
-        <small>How emotionally charged are you for this wish?</small>
+        <small class="small-muted">How emotionally charged are you for this wish?</small>
       </label>
 
-      <div class="buttons-row">
-        <button type="button" id="calculateBtn">Calculate</button>
-        <button type="button" id="resetBtn">Reset</button>
+    <div class="buttons-row">
+      <button type="button" id="calculateBtn">Calculate</button>
+      <button type="button" id="resetBtn" class="reset">Reset</button>
+
+      <!-- Back / Consulting (you said these are already placed where you want) -->
+      <a href="index.html" class="link">🏠 Back to Home</a>
       </div>
-    </form>
+  </form>
 
-    <div id="result" class="result-panel" style="display:none"></div>
+  <div id="result" role="status" aria-live="polite"></div>
 
-    <div class="popup-container">
-      <div id="popup" class="modal-card" style="display:none">
-        <h3 class="modal-heading">For further guidance, please try our consulting services</h3>
-        <div class="modal-actions">
-          <a href="details.html" class="modal-link">Go to Consulting</a>
-          <button id="popupClose" class="modal-close">Close</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="cta" style="text-align:center;">
-      <a class="btn" href="index.html">Back to Home</a>
-    </div>
-  </section>
+  <!-- consulting panel — now shows every time calculate is hit -->
+  <div id="consultingPopup">
+    <h3>For further guidance, please try our consulting services</h3>
+    <a href="details.html" class="download-btn">Go to Consulting</a>
+  </div>
+</section>
 </main>
+
+<!-- Admin Popup -->
+<div id="adminPopup" aria-hidden="true">
+  <h3>All Stored Manifestation Data</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th><th>Email</th><th>Intention</th><th>Timing</th><th>Action</th>
+        <th>Clarity</th><th>Patience</th><th>Emotional Energy</th><th>Score</th><th>Strengths</th><th>Improvements</th>
+      </tr>
+    </thead>
+    <tbody id="adminTableBody"></tbody>
+  </table>
+  <div style="display:flex;gap:10px;margin-top:10px;">
+    <button id="downloadBtn" class="admin-btn">Download XLSX</button>
+    <button id="resetAllBtn" class="admin-btn" style="background:#7c3aed;">Reset All Data</button>
+    <button onclick="closeAdmin()">Close</button>
+  </div>
+</div>
 
 <footer class="site-footer">
   <p>© 2025 Elevia</p>
 </footer>
 
-<script src="app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// Sign In / Sign Up logic
-function showSignup() {
-  document.getElementById('signin-popup').style.display = 'none';
-  document.getElementById('signup-popup').style.display = 'flex';
+const ADMIN_EMAIL = "admin@elevia.com";
+
+// Helper: show/hide elements
+const signoutBtn = document.getElementById('signoutBtn');
+const adminBtn = document.getElementById('adminBtn');
+const signinPopup = document.getElementById('signin-popup');
+const signupPopup = document.getElementById('signup-popup');
+const consultingPopup = document.getElementById('consultingPopup');
+const resultDiv = document.getElementById('result');
+
+// Show popups
+function showSignup(){ signinPopup.style.display='none'; signupPopup.style.display='flex'; }
+function showSignin(){ signupPopup.style.display='none'; signinPopup.style.display='flex'; }
+
+// Sign Up
+function signup(){
+  const name=document.getElementById('signup-name').value.trim();
+  const email=document.getElementById('signup-email').value.trim();
+  const password=document.getElementById('signup-password').value.trim();
+  if(!name||!email||!password){ alert("Please fill all fields"); return; }
+  let users=JSON.parse(localStorage.getItem('users'))||[];
+  if(users.find(u=>u.email===email)){ alert("Email already exists"); return; }
+  users.push({name,email,password});
+  localStorage.setItem('users',JSON.stringify(users));
+  // set session login so popup won't reappear while tab open
+  sessionStorage.setItem('loggedIn', 'true');
+  sessionStorage.setItem('currentUser', JSON.stringify({name,email}));
+  alert("Account created successfully!");
+  signupPopup.style.display='none';
+  showUserButtons(email);
 }
-function showSignin() {
-  document.getElementById('signup-popup').style.display = 'none';
-  document.getElementById('signin-popup').style.display = 'flex';
+
+// Sign In
+function signin(){
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value.trim();
+  let users=JSON.parse(localStorage.getItem('users'))||[];
+  let user=users.find(u=>u.email===email && u.password===password);
+  if(user){
+    // session login
+    sessionStorage.setItem('loggedIn', 'true');
+    sessionStorage.setItem('currentUser', JSON.stringify({name:user.name,email:user.email}));
+    signinPopup.style.display='none';
+    showUserButtons(email);
+    alert("Welcome "+user.name+"!");
+  } else {
+    alert("Incorrect email or password");
+  }
 }
-function signin() {
-  // For now, just close popup
-  document.getElementById('signin-popup').style.display = 'none';
+
+// Show user controls
+function showUserButtons(email){
+  signoutBtn.style.display='inline-block';
+  if(email===ADMIN_EMAIL) adminBtn.style.display='inline-block';
 }
-function signup() {
-  document.getElementById('signup-popup').style.display = 'none';
-}
-// Show SignIn popup on page load
-window.onload = function() {
-  document.getElementById('signin-popup').style.display = 'flex';
+
+// Sign Out
+signoutBtn.addEventListener('click',()=>{
+  signoutBtn.style.display='none';
+  adminBtn.style.display='none';
+  sessionStorage.removeItem('loggedIn');
+  sessionStorage.removeItem('currentUser');
+  // keep users stored in localStorage but clear session so popup appears next visit (or redirect to home)
+  signinPopup.style.display='flex';
+});
+
+// Admin View
+adminBtn.addEventListener('click',()=>{
+  const allData = JSON.parse(localStorage.getItem('allCalculations')) || [];
+  const tbody = document.getElementById('adminTableBody');
+  tbody.innerHTML = '';
+  if(allData.length){
+    allData.forEach(item=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${item.name||''}</td><td>${item.email||''}</td><td>${item.intention||''}</td>
+      <td>${item.timing||''}</td><td>${item.action||''}</td><td>${item.clarity||''}</td>
+      <td>${item.patience||''}</td><td>${item.phi||''}</td><td>${item.score||''}</td>
+      <td>${item.strengths||''}</td><td>${item.improvements||''}</td>`;
+      tbody.appendChild(tr);
+    });
+  } else {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="11">No calculations yet</td>`;
+    tbody.appendChild(tr);
+  }
+  document.getElementById('adminPopup').style.display='block';
+});
+function closeAdmin(){ document.getElementById('adminPopup').style.display='none'; }
+
+// Calculate
+document.getElementById('calculateBtn').addEventListener('click',()=>{
+  const intention=document.getElementById('intention').value;
+  const timing=parseInt(document.getElementById('timing').value);
+  const action=parseInt(document.getElementById('action').value);
+  const clarity=parseInt(document.getElementById('clarity').value);
+  const patience=document.getElementById('patience').value;
+  const phi=parseInt(document.getElementById('phi').value);
+
+  if(!intention||!timing||!action||!clarity||!patience||isNaN(phi)){
+    alert("Please fill all fields"); return;
+  }
+
+  // current user from sessionStorage (so popup won't reappear across page switches)
+  const storedSession = JSON.parse(sessionStorage.getItem('currentUser'));
+  const userName = storedSession ? storedSession.name : "User";
+  const userEmail = storedSession ? storedSession.email : "";
+
+  // score 0-10
+  let score = ((timing + action + clarity) / 30 * 10);
+  score = Math.round(score * 10) / 10;
+
+  // strengths & improvements
+  let strengthsArr = [], improveArr = [];
+  if(timing >= 7) strengthsArr.push("Timing readiness"); else improveArr.push("Timing readiness");
+  if(action >= 7) strengthsArr.push("Action alignment"); else improveArr.push("Action alignment");
+  if(clarity >= 7) strengthsArr.push("Milestone clarity"); else improveArr.push("Milestone clarity");
+  if(patience === "High") strengthsArr.push("Patience"); else improveArr.push("Patience");
+  if(phi === 360) strengthsArr.push("Emotional energy"); else improveArr.push("Emotional energy");
+  const strengths = strengthsArr.join(", ");
+  const improvements = improveArr.join(", ");
+
+  const calcData={name:userName,email:userEmail,intention,timing,action,clarity,patience,phi,score,strengths,improvements, date: new Date().toLocaleString()};
+  let allData = JSON.parse(localStorage.getItem('allCalculations')) || [];
+  allData.push(calcData);
+  localStorage.setItem('allCalculations', JSON.stringify(allData));
+
+  // Personalized, warm message
+  let msg = `Dear ${userName}, `;
+  if(score >= 8) msg += `you are in a highly favorable phase to manifest "${intention}". Your energy and actions are aligned — lean into this momentum this week.`;
+  else if(score >= 5) msg += `you're on the right path for "${intention}". Small adjustments to clarity and consistent action will significantly help.`;
+  else msg += `this is a gentle moment to reflect and realign for "${intention}". Focus on small, steady steps and patience will grow your results.`;
+  if(strengths) msg += ` <br><strong>Strengths:</strong> ${strengths}.`;
+  if(improvements) msg += ` <br><strong>Areas to improve:</strong> ${improvements}.`;
+
+  resultDiv.innerHTML = msg;
+  resultDiv.style.display = 'block';
+
+  // Show consulting panel every time after calculate
+  consultingPopup.style.display = 'block';
+});
+
+// Reset current form (not data)
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  document.getElementById('manifestationForm').reset();
+  resultDiv.style.display = 'none';
+  consultingPopup.style.display = 'none';
+});
+
+// Keep user signed in for the session and avoid popup reappear when switching pages
+window.onload = function(){
+  const sessionUser = JSON.parse(sessionStorage.getItem('currentUser'));
+  if(sessionUser){
+    // session login active
+    showUserButtons(sessionUser.email);
+    signinPopup.style.display = 'none';
+    signupPopup.style.display = 'none';
+  } else {
+    // Not logged in -> show sign in popup
+    signinPopup.style.display = 'flex';
+  }
 };
+
+// Download XLSX (admin) - includes the personalized message, date
+document.getElementById('downloadBtn').addEventListener('click',function(){
+  const allData = JSON.parse(localStorage.getItem('allCalculations')) || [];
+  if(!allData.length){ alert("No data to download"); return; }
+  const ws = XLSX.utils.json_to_sheet(allData);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Calculations");
+  XLSX.writeFile(wb,"EleviaCalculations.xlsx");
+});
+
+// Reset All Data (admin) with confirmation
+document.getElementById('resetAllBtn').addEventListener('click', function(){
+  if(!confirm("Are you sure? This will permanently delete all stored calculation data.")) return;
+  localStorage.removeItem('allCalculations');
+  // refresh admin view if open
+  const tbody = document.getElementById('adminTableBody');
+  if(tbody) tbody.innerHTML = `<tr><td colspan="11">No calculations yet</td></tr>`;
+  alert("All stored calculation data has been deleted.");
+});
 </script>
 </body>
 </html>
