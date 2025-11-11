@@ -81,24 +81,39 @@ body { font-family: 'Poppins', sans-serif; background:#f3f5f9; margin:0; padding
         <option value="Health">Health</option><option value="Wealth">Wealth</option><option value="Self">Self-Growth</option>
       </select>
     </label>
-    <label>⏳ Timing Readiness (1–10)
-      <select id="timing">
-        <option value="">— Select —</option>
-        ${[...Array(10)].map((_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}
-      </select>
-    </label>
-    <label>🏃 Action Alignment (1–10)
-      <select id="action">
-        <option value="">— Select —</option>
-        ${[...Array(10)].map((_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}
-      </select>
-    </label>
-    <label>🎯 Milestone Clarity (1–10)
-      <select id="clarity">
-        <option value="">— Select —</option>
-        ${[...Array(10)].map((_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}
-      </select>
-    </label>
+   <label>⏳ Timing Readiness (1–10)
+        <select id="timing">
+          <option value="">— Select 1–10 —</option>
+          <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10 (High)</option>
+        </select>
+        <small>Is now the right time for this wish?</small>
+      </label>
+
+        <label>🏃 Action Alignment (1–10)
+        <select id="action">
+          <option value="">— Select 1–10 —</option>
+          <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10 (High)</option>
+        </select>
+        <small>Are your actions aligned with your wish?</small>
+      </label>
+
+     <label>🎯 Milestone Clarity (1–10)
+        <select id="clarity">
+          <option value="">— Select 1–10 —</option>
+          <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10 (High)</option>
+        </select>
+        <small>How clear is your goal?</small>
+      </label>
+
     <label>🌈 Patience Level
       <select id="patience">
         <option value="">— Select —</option>
