@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
 <header class="site-header">
   <h1 class="site-title">Elevia</h1>
@@ -94,8 +95,6 @@
         <small>How emotionally charged are you for this wish?</small>
       </label>
 
-
-
       <div class="buttons-row">
         <button type="button" id="calculateBtn">Calculate</button>
         <button type="button" id="resetBtn">Reset</button>
@@ -120,7 +119,7 @@
 <script>
 const SUPABASE_URL = "https://dvvktlngsiqerhsikfna.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dmt0bG5nc2lxZXJoc2lrZm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NTI5ODksImV4cCI6MjA3ODQyODk4OX0.IGIeZLmEWwUsof-Fj_vIAHhhlvIFN-yjVjHsJHluBcM";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // -------- AUTH --------
 async function signInUser() {
@@ -128,16 +127,14 @@ async function signInUser() {
   const email = document.getElementById('email').value.trim();
   if (!name || !email) return alert("Please enter name and email.");
 
-  // Save locally to keep logged in
   localStorage.setItem("userEmail", email);
   localStorage.setItem("userName", name);
 
-  // Add user to Supabase
-  await supabase.from("Users").upsert([{ name, email }]);
+  const { error } = await client.from("Users").upsert([{ name, email }]);
+  if (error) console.error("User Insert Error:", error);
 
   document.getElementById('auth-popup').style.display = 'none';
   document.getElementById('signOutBtn').style.display = 'inline-block';
-
   if (email === "admin@elevia.com") document.getElementById('adminPanel').style.display = 'block';
 }
 
@@ -175,11 +172,9 @@ document.getElementById("calculateBtn").onclick = async () => {
     return;
   }
 
-  // Calculate simple weighted score
   let patienceVal = patience === "High" ? 10 : patience === "Medium" ? 6 : 3;
-  let score = Math.round((timing + action + clarity + patienceVal + phi/36) / 5);
+  let score = Math.round((timing + action + clarity + patienceVal + phi / 36) / 5);
 
-  // Personalized message
   let message = "";
   if (score >= 8) message = `✨ ${name}, your manifestation energy for ${intention} is radiating strongly! Keep believing — the universe is aligning in your favor.`;
   else if (score >= 5) message = `🌱 ${name}, you're halfway there with your ${intention} manifestation. Reflect, realign your focus, and watch how things shift.`;
@@ -188,11 +183,12 @@ document.getElementById("calculateBtn").onclick = async () => {
   document.getElementById("result").style.display = "block";
   document.getElementById("result").innerHTML = `<h3>Your Manifestation Score: ${score}/10</h3><p>${message}</p>`;
 
-  // Store in Supabase
   const created_at = new Date().toISOString();
-  await supabase.from("Calculations").insert([{ 
+  const { error } = await client.from("Calculations").insert([{ 
     user_email: email, intention, timing, action, clarity, patience, phi, score, result_message: message, created_at 
   }]);
+
+  if (error) console.error("Calculation Insert Error:", error);
 };
 
 // -------- RESET --------
@@ -203,7 +199,7 @@ document.getElementById("resetBtn").onclick = () => {
 
 // -------- ADMIN DOWNLOAD --------
 document.getElementById("downloadDataBtn").onclick = async () => {
-  const { data, error } = await supabase.from("Calculations").select("*");
+  const { data, error } = await client.from("Calculations").select("*");
   if (error) return alert("Error fetching data.");
 
   let csv = "User Email,Intention,Timing,Action,Clarity,Patience,Phi,Score,Message,Date\n";
