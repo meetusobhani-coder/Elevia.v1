@@ -1,87 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Elevia — Calculator</title>
-<link rel="stylesheet" href="style.css">
-<style>
-body { font-family: 'Poppins', sans-serif; background:#f3f5f9; margin:0; padding:0; }
-.site-header { display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-.site-title { font-size:24px; }
-.signout-btn, .admin-btn { border:none; padding:5px 10px; border-radius:5px; cursor:pointer; margin-left:10px; font-size:14px; }
-.signout-btn { background:#22c55e; color:#fff; }
-.admin-btn { background:#ff6b6b; color:#fff; }
-.main-center { max-width:800px; margin:20px auto; padding:0 20px; }
-.calculator-wrap { background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
-.calc-form label { display:block; margin-bottom:15px; font-weight:500; }
-.calc-form select { width:100%; padding:8px; margin-top:5px; border-radius:5px; border:1px solid #ccc; }
-.buttons-row { display:flex; gap:10px; margin-top:15px; flex-wrap:wrap; justify-content:center; }
-.buttons-row button, .buttons-row a { padding:10px 15px; border:none; border-radius:5px; cursor:pointer; background:#4f46e5; color:#fff; text-decoration:none; text-align:center; }
-.buttons-row .reset { background:#6b7280; }
-.buttons-row .link { background:#fff; color:#4f46e5; border:1px solid #e6e9f2; }
-#result { margin-top:20px; padding:15px; background:#f0f4ff; border-radius:5px; display:none; }
-#consultingPopup { margin-top:15px; padding:15px; background:#fff0f5; border-radius:8px; display:none; text-align:center; }
-.download-btn { margin-top:10px; padding:8px 12px; background:#4f46e5; color:#fff; border:none; border-radius:5px; cursor:pointer; text-decoration:none; display:inline-block; }
-#adminPopup { display:none; position:fixed; top:10%; left:50%; transform:translateX(-50%); background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.3); max-width:90%; max-height:80%; overflow:auto; z-index:1000; }
-#adminPopup table { width:100%; border-collapse:collapse; margin-top:10px; }
-#adminPopup th, #adminPopup td { border:1px solid #ccc; padding:8px; text-align:center; }
-#adminPopup button { margin-top:10px; background:#ff6b6b; color:#fff; padding:5px 10px; border:none; border-radius:5px; cursor:pointer; }
-.popup-input { width:90%; padding:8px; margin:8px 0; border-radius:5px; border:1px solid #ccc; }
-.popup-btn { padding:10px 15px; margin-top:10px; border:none; border-radius:5px; cursor:pointer; background:#4f46e5; color:#fff; width:95%; }
-.popup-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index:999; }
-.popup-box { background:#fff; padding:20px; border-radius:10px; max-width:400px; width:90%; text-align:center; }
-.signup-link { color:#4f46e5; cursor:pointer; margin-top:10px; display:block; }
-.small-muted { font-size:0.9rem; color:#6b7280; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elevia — Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-
-<!-- Sign In Popup -->
-<div id="signin-popup" class="popup-overlay" style="display:none;">
-  <div class="popup-box">
-    <h2>Welcome to Elevia ✨</h2>
-    <p class="small-muted">Sign in or sign up to continue your journey</p>
-    <input type="email" id="email" placeholder="Enter your email" class="popup-input" />
-    <input type="password" id="password" placeholder="Enter your password" class="popup-input" />
-    <button onclick="signin()" class="popup-btn">Sign In</button>
-    <p class="signup-link" onclick="showSignup()">New here? Create an account</p>
-  </div>
-</div>
-
-<!-- Signup Popup -->
-<div id="signup-popup" class="popup-overlay" style="display:none;">
-  <div class="popup-box">
-    <h2>Create Your Account 🌱</h2>
-    <input type="text" id="signup-name" placeholder="Full Name" class="popup-input" />
-    <input type="email" id="signup-email" placeholder="Email" class="popup-input" />
-    <input type="password" id="signup-password" placeholder="Password" class="popup-input" />
-    <button onclick="signup()" class="popup-btn">Sign Up</button>
-    <p class="signup-link" onclick="showSignin()">Already have an account? Sign in</p>
-  </div>
-</div>
-
 <header class="site-header">
   <h1 class="site-title">Elevia</h1>
-  <div>
-    <button id="signoutBtn" class="signout-btn" style="display:none;">Sign Out</button>
-    <button id="adminBtn" class="admin-btn" style="display:none;">Admin View</button>
-  </div>
+  <button id="signOutBtn" class="signout-btn" style="display:none;">Sign Out</button>
 </header>
 
-<main class="main-center">
-<section class="calculator-wrap">
-  <h2 class="calc-intro">Discover your readiness to manifest your desires!</h2>
+<!-- Sign In / Sign Up Popup -->
+<div id="auth-popup" class="popup-overlay">
+  <div class="popup-box">
+    <h2>Welcome to Elevia ✨</h2>
+    <input type="text" id="name" placeholder="Full Name" class="popup-input" />
+    <input type="email" id="email" placeholder="Email" class="popup-input" />
+    <button onclick="signInUser()" class="popup-btn">Continue</button>
+  </div>
+</div>
 
-  <form id="manifestationForm" class="calc-form" onsubmit="return false;">
+<main class="main-center">
+  <section class="calculator-wrap">
+    <h2 class="calc-intro">Discover your readiness to manifest your desires. Adjust your intention, focus, and energy levels to see your manifestation readiness score!</h2>
+
+   <form id="manifestationForm" class="calc-form" onsubmit="return false;">
     <label>✨ Intention
-      <select id="intention">
-        <option value="">— Select intention —</option>
-        <option value="Love">Love</option><option value="Career">Career</option><option value="Family">Family</option>
-        <option value="Health">Health</option><option value="Wealth">Wealth</option><option value="Self">Self-Growth</option>
-      </select>
-    </label>
-   <label>⏳ Timing Readiness (1–10)
+        <select id="intention">
+          <option value="">— Select intention —</option>
+          <option value="Love">Love</option>
+          <option value="Career">Career</option>
+          <option value="Family">Family</option>
+          <option value="Health">Health</option>
+          <option value="Wealth">Wealth</option>
+          <option value="Self">Self-Growth</option>
+        </select>
+        <small>Choose your main focus for manifestation.</small>
+      </label>
+
+      <label>⏳ Timing Readiness (1–10)
         <select id="timing">
           <option value="">— Select 1–10 —</option>
           <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
@@ -92,7 +52,7 @@ body { font-family: 'Poppins', sans-serif; background:#f3f5f9; margin:0; padding
         <small>Is now the right time for this wish?</small>
       </label>
 
-        <label>🏃 Action Alignment (1–10)
+      <label>🏃 Action Alignment (1–10)
         <select id="action">
           <option value="">— Select 1–10 —</option>
           <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
@@ -103,7 +63,7 @@ body { font-family: 'Poppins', sans-serif; background:#f3f5f9; margin:0; padding
         <small>Are your actions aligned with your wish?</small>
       </label>
 
-     <label>🎯 Milestone Clarity (1–10)
+      <label>🎯 Milestone Clarity (1–10)
         <select id="clarity">
           <option value="">— Select 1–10 —</option>
           <option value="1">1 (Low)</option><option value="2">2</option><option value="3">3</option>
@@ -114,193 +74,165 @@ body { font-family: 'Poppins', sans-serif; background:#f3f5f9; margin:0; padding
         <small>How clear is your goal?</small>
       </label>
 
-    <label>🌈 Patience Level
-      <select id="patience">
-        <option value="">— Select —</option>
-        <option>Low</option><option>Medium</option><option>High</option>
-      </select>
-    </label>
-    <label>❤️ Emotional Energy (°)
-      <select id="phi">
-        <option value="">— Select —</option>
-        <option value="0">0°</option><option value="180">180°</option><option value="360">360°</option>
-      </select>
-    </label>
+      <label>🌈 Patience Level
+        <select id="patience">
+          <option value="">— Select —</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+        <small>How calm can you stay if things don’t go perfectly?</small>
+      </label>
 
-    <div class="buttons-row">
-      <button type="button" id="calculateBtn">Calculate</button>
-      <button type="button" id="resetBtn" class="reset">Reset</button>
+      <label>❤️ Emotional Energy (°)
+        <select id="phi">
+          <option value="">— Select —</option>
+          <option value="0">0° (Low)</option>
+          <option value="180">180° (Moderate)</option>
+          <option value="360">360° (High)</option>
+        </select>
+        <small>How emotionally charged are you for this wish?</small>
+      </label>
+
+
+
+      <div class="buttons-row">
+        <button type="button" id="calculateBtn">Calculate</button>
+        <button type="button" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="buttons-row">
+        <a href="index.html" class="btn">Back to Home</a>
+        <a href="details.html" class="btn">Go to Consulting</a>
+      </div>
+    </form>
+
+    <div id="result" class="result-panel" style="display:none;"></div>
+
+    <div id="adminPanel" style="display:none; margin-top:20px;">
+      <button id="downloadDataBtn" class="btn">Download All Data (CSV)</button>
     </div>
-
-    <div class="buttons-row">
-      <a href="index.html" class="link">🏠 Back to Home</a>
-      <a href="details.html" class="link">🌟 Go to Consulting</a>
-    </div>
-  </form>
-
-  <div id="result"></div>
-  <div id="consultingPopup">
-    <h3>Need deeper clarity? Explore our consulting section.</h3>
-    <a href="details.html" class="download-btn">Go to Consulting</a>
-  </div>
-</section>
+  </section>
 </main>
 
-<!-- Admin Popup -->
-<div id="adminPopup">
-  <h3>All Stored Manifestation Data</h3>
-  <table>
-    <thead>
-      <tr><th>Name</th><th>Email</th><th>Intention</th><th>Score</th><th>Strengths</th><th>Improvements</th><th>Date</th></tr>
-    </thead>
-    <tbody id="adminTableBody"></tbody>
-  </table>
-  <div style="display:flex;gap:10px;margin-top:10px;">
-    <button id="downloadBtn" class="admin-btn">Download XLSX</button>
-    <button id="resetAllBtn" class="admin-btn" style="background:#7c3aed;">Reset All Data</button>
-    <button onclick="closeAdmin()">Close</button>
-  </div>
-</div>
+<footer class="site-footer"><p>© 2025 Elevia</p></footer>
 
-<footer class="site-footer">
-  <p>© 2025 Elevia</p>
-</footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-const ADMIN_EMAIL = "admin@elevia.com";
-const signinPopup=document.getElementById('signin-popup');
-const signupPopup=document.getElementById('signup-popup');
-const signoutBtn=document.getElementById('signoutBtn');
-const adminBtn=document.getElementById('adminBtn');
-const resultDiv=document.getElementById('result');
-const consultingPopup=document.getElementById('consultingPopup');
+const SUPABASE_URL = "https://dvvktlngsiqerhsikfna.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2dmt0bG5nc2lxZXJoc2lrZm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NTI5ODksImV4cCI6MjA3ODQyODk4OX0.IGIeZLmEWwUsof-Fj_vIAHhhlvIFN-yjVjHsJHluBcM";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// show/hide
-function showSignup(){ signinPopup.style.display='none'; signupPopup.style.display='flex'; }
-function showSignin(){ signupPopup.style.display='none'; signinPopup.style.display='flex'; }
+// -------- AUTH --------
+async function signInUser() {
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  if (!name || !email) return alert("Please enter name and email.");
 
-// sign up
-function signup(){
-  const name=document.getElementById('signup-name').value.trim();
-  const email=document.getElementById('signup-email').value.trim();
-  const password=document.getElementById('signup-password').value.trim();
-  if(!name||!email||!password){ alert("Please fill all fields"); return; }
-  let users=JSON.parse(localStorage.getItem('users'))||[];
-  if(users.find(u=>u.email===email)){ alert("Email exists"); return; }
-  users.push({name,email,password});
-  localStorage.setItem('users',JSON.stringify(users));
-  sessionStorage.setItem('loggedIn','true');
-  sessionStorage.setItem('currentUser',JSON.stringify({name,email}));
-  signupPopup.style.display='none'; showUserButtons(email);
+  // Save locally to keep logged in
+  localStorage.setItem("userEmail", email);
+  localStorage.setItem("userName", name);
+
+  // Add user to Supabase
+  await supabase.from("Users").upsert([{ name, email }]);
+
+  document.getElementById('auth-popup').style.display = 'none';
+  document.getElementById('signOutBtn').style.display = 'inline-block';
+
+  if (email === "admin@elevia.com") document.getElementById('adminPanel').style.display = 'block';
 }
 
-// sign in
-function signin(){
-  const email=document.getElementById('email').value.trim();
-  const password=document.getElementById('password').value.trim();
-  const users=JSON.parse(localStorage.getItem('users'))||[];
-  const user=users.find(u=>u.email===email&&u.password===password);
-  if(!user){ alert("Incorrect credentials"); return; }
-  sessionStorage.setItem('loggedIn','true');
-  sessionStorage.setItem('currentUser',JSON.stringify({name:user.name,email:user.email}));
-  signinPopup.style.display='none'; showUserButtons(email);
-}
+// Show popup only first time
+window.onload = function() {
+  const user = localStorage.getItem("userEmail");
+  if (user) {
+    document.getElementById('auth-popup').style.display = 'none';
+    document.getElementById('signOutBtn').style.display = 'inline-block';
+    if (user === "admin@elevia.com") document.getElementById('adminPanel').style.display = 'block';
+  } else {
+    document.getElementById('auth-popup').style.display = 'flex';
+  }
+};
 
-// show user buttons
-function showUserButtons(email){
-  signoutBtn.style.display='inline-block';
-  if(email===ADMIN_EMAIL) adminBtn.style.display='inline-block';
-}
-
-// sign out
-signoutBtn.addEventListener('click',()=>{
-  sessionStorage.clear();
+document.getElementById("signOutBtn").onclick = () => {
+  localStorage.clear();
   location.reload();
-});
+};
 
-// calculate
-document.getElementById('calculateBtn').addEventListener('click',()=>{
-  const intention=document.getElementById('intention').value;
-  const timing=parseInt(document.getElementById('timing').value);
-  const action=parseInt(document.getElementById('action').value);
-  const clarity=parseInt(document.getElementById('clarity').value);
-  const patience=document.getElementById('patience').value;
-  const phi=parseInt(document.getElementById('phi').value);
-  if(!intention||!timing||!action||!clarity||!patience||isNaN(phi)){ alert("Please fill all fields"); return; }
+// -------- CALCULATE --------
+document.getElementById("calculateBtn").onclick = async () => {
+  const name = localStorage.getItem("userName");
+  const email = localStorage.getItem("userEmail");
 
-  const currentUser=JSON.parse(sessionStorage.getItem('currentUser'))||{name:"User",email:""};
-  let score=Math.round(((timing+action+clarity)/30*10)*10)/10;
-  let strengths=[],improve=[];
-  if(timing>=7) strengths.push("Timing"); else improve.push("Timing");
-  if(action>=7) strengths.push("Action"); else improve.push("Action");
-  if(clarity>=7) strengths.push("Clarity"); else improve.push("Clarity");
-  if(patience==="High") strengths.push("Patience"); else improve.push("Patience");
-  if(phi===360) strengths.push("Emotional energy"); else improve.push("Emotional energy");
-  const msg=`Dear ${currentUser.name},<br>
-  ${
-    score>=8?`You’re in a powerful phase to manifest <b>${intention}</b>. Keep going with confidence!`:
-    score>=5?`You’re on track for <b>${intention}</b>. A few steady tweaks in action and clarity will amplify your results.`:
-    `This is a reflective time for <b>${intention}</b>. Revisit your vision gently and align your pace with patience.`
+  const intention = document.getElementById("intention").value;
+  const timing = parseInt(document.getElementById("timing").value);
+  const action = parseInt(document.getElementById("action").value);
+  const clarity = parseInt(document.getElementById("clarity").value);
+  const patience = document.getElementById("patience").value;
+  const phi = parseInt(document.getElementById("phi").value);
+
+  if (!intention || !timing || !action || !clarity || !patience || !phi) {
+    alert("Please fill out all fields.");
+    return;
   }
-  <br><strong>Strengths:</strong> ${strengths.join(", ")}<br>
-  <strong>Improvements:</strong> ${improve.join(", ")}`;
 
-  resultDiv.innerHTML=msg;
-  resultDiv.style.display='block';
-  consultingPopup.style.display='block';
+  // Calculate simple weighted score
+  let patienceVal = patience === "High" ? 10 : patience === "Medium" ? 6 : 3;
+  let score = Math.round((timing + action + clarity + patienceVal + phi/36) / 5);
 
-  const data={name:currentUser.name,email:currentUser.email,intention,score,strengths:strengths.join(", "),improvements:improve.join(", "),date:new Date().toLocaleString()};
-  const allData=JSON.parse(localStorage.getItem('allCalculations'))||[];
-  allData.push(data);
-  localStorage.setItem('allCalculations',JSON.stringify(allData));
-});
+  // Personalized message
+  let message = "";
+  if (score >= 8) message = `✨ ${name}, your manifestation energy for ${intention} is radiating strongly! Keep believing — the universe is aligning in your favor.`;
+  else if (score >= 5) message = `🌱 ${name}, you're halfway there with your ${intention} manifestation. Reflect, realign your focus, and watch how things shift.`;
+  else message = `💫 ${name}, your energy feels scattered right now for ${intention}. Take small consistent steps and rebuild clarity — the spark will return.`;
 
-// reset
-document.getElementById('resetBtn').addEventListener('click',()=>{
-  document.getElementById('manifestationForm').reset();
-  resultDiv.style.display='none';
-  consultingPopup.style.display='none';
-});
+  document.getElementById("result").style.display = "block";
+  document.getElementById("result").innerHTML = `<h3>Your Manifestation Score: ${score}/10</h3><p>${message}</p>`;
 
-// admin view
-adminBtn.addEventListener('click',()=>{
-  const allData=JSON.parse(localStorage.getItem('allCalculations'))||[];
-  const tbody=document.getElementById('adminTableBody');
-  tbody.innerHTML='';
-  allData.forEach(i=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${i.name}</td><td>${i.email}</td><td>${i.intention}</td><td>${i.score}</td><td>${i.strengths}</td><td>${i.improvements}</td><td>${i.date}</td>`;
-    tbody.appendChild(tr);
+  // Store in Supabase
+  const created_at = new Date().toISOString();
+  await supabase.from("Calculations").insert([{ 
+    user_email: email, intention, timing, action, clarity, patience, phi, score, result_message: message, created_at 
+  }]);
+};
+
+// -------- RESET --------
+document.getElementById("resetBtn").onclick = () => {
+  document.getElementById("manifestationForm").reset();
+  document.getElementById("result").style.display = "none";
+};
+
+// -------- ADMIN DOWNLOAD --------
+document.getElementById("downloadDataBtn").onclick = async () => {
+  const { data, error } = await supabase.from("Calculations").select("*");
+  if (error) return alert("Error fetching data.");
+
+  let csv = "User Email,Intention,Timing,Action,Clarity,Patience,Phi,Score,Message,Date\n";
+  data.forEach(row => {
+    csv += `${row.user_email},${row.intention},${row.timing},${row.action},${row.clarity},${row.patience},${row.phi},${row.score},"${row.result_message}",${row.created_at}\n`;
   });
-  document.getElementById('adminPopup').style.display='block';
-});
-function closeAdmin(){ document.getElementById('adminPopup').style.display='none'; }
 
-// download
-document.getElementById('downloadBtn').addEventListener('click',()=>{
-  const allData=JSON.parse(localStorage.getItem('allCalculations'))||[];
-  if(!allData.length){ alert("No data"); return; }
-  const ws=XLSX.utils.json_to_sheet(allData);
-  const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Elevia");
-  XLSX.writeFile(wb,"Elevia_Data.xlsx");
-});
-
-// reset all data
-document.getElementById('resetAllBtn').addEventListener('click',()=>{
-  if(confirm("Delete all data?")){
-    localStorage.removeItem('allCalculations');
-    alert("Data cleared");
-  }
-});
-
-// maintain session (no popup across pages)
-window.onload=()=>{
-  const sessionUser=JSON.parse(sessionStorage.getItem('currentUser'));
-  if(sessionUser){
-    showUserButtons(sessionUser.email);
-  }else signinPopup.style.display='flex';
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Elevia_Calculations.csv";
+  a.click();
 };
 </script>
+
+<style>
+body {font-family: Poppins, sans-serif; background:#f3f5f9; color:#1f2937; text-align:center;}
+.site-header{display:flex;justify-content:center;align-items:center;position:relative;padding:1rem;}
+.signout-btn{position:absolute;right:10px;background:#ff7675;color:#fff;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;}
+.popup-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;}
+.popup-box{background:#fff;padding:20px;border-radius:12px;width:300px;}
+.popup-input{width:90%;margin:8px;padding:8px;border:1px solid #ddd;border-radius:8px;}
+.popup-btn{background:#6366f1;color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;}
+.calc-form label{display:block;margin:10px 0;}
+select{padding:5px;border-radius:6px;}
+.buttons-row{margin:10px 0;}
+.btn,button{background:#6366f1;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;margin:4px;}
+.result-panel{background:#fff;border-radius:12px;padding:15px;margin-top:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+</style>
 </body>
 </html>
